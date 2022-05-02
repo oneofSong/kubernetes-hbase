@@ -10,17 +10,19 @@ metadata:
 data:
   hbase-site.xml: |
     <configuration>
+      <!--
       <property>
         <name>hbase.master</name>
         <value>{{ template "hbase.name" . }}-hbase-master:16010</value>
       </property>
+      -->
       <property>
         <name>zookeeper.znode.parent</name>
         <value>/hbase</value>
       </property>
       <property>
         <name>hbase.rootdir</name>
-        <value>hdfs://{{ .Values.hbase.hdfs.name }}-hdfs-nn:9000/hbase</value>
+        <value>{{ .Values.hbase.hdfs.rootdir }}</value>
       </property>
       <property>
         <name>hbase.unsafe.stream.capability.enforce</name>
@@ -36,16 +38,16 @@ data:
       </property>
       <property>
         <name>hbase.zookeeper.quorum</name>
-        <value>{{ .Values.hbase.zookeeper.quorum }}</value>
+        <value>{{ template "zookeeper-quorum" . }}</value>
       </property>
     </configuration>
 
   bootstrap.sh: |
     #!/bin/bash
 
-    : ${HADOOP_PREFIX:=/usr/local/hadoop}
+    #: ${HADOOP_PREFIX:=/usr/local/hadoop}
 
-    . $HADOOP_PREFIX/etc/hadoop/hadoop-env.sh
+    #. $HADOOP_PREFIX/etc/hadoop/hadoop-env.sh
 
     # Directory to find config artifacts
     CONFIG_DIR="/tmp/hbase-config"

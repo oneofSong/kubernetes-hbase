@@ -1,9 +1,8 @@
 # HBase chart
 
-Original chart from [warp-poke/hbase-helm](https://github.com/warp-poke/hbase-helm), modified to work with [chenseanxy/helm-hadoop-3](https://github.com/chenseanxy/helm-hadoop-3) chart.
+Original chart from [chenseanxy/helm-hbase-chart](https://github.com/chenseanxy/helm-hbase-chart), modified to work with [oneofSong/hadoop-docker](https://github.com/oneofSong/hadoop-docker) chart.
 
-Current Version: HBase 2.1.7 based on Hadoop 3.1.2
-For HBase 1 chart, use tag [1.4.10-hadoop3.1.2](https://github.com/chenseanxy/helm-hbase-chart/tree/1.4.10-hadoop3.1.2)
+Current Version: HBase 1.2.4 based on Hadoop 2.7.3
 
 A chart to deploy Hbase with Hadoop using Kubernetes. Heavily inspired by the [Hadoop chart](https://github.com/kubernetes/charts/tree/master/stable/hadoop).
 
@@ -18,15 +17,17 @@ Required charts:
 
  * Zookeeper: `incubator/zookeeper` from helm/charts
 
- * Hadoop: `chenseanxy/helm-hadoop-3` from [here](https://github.com/chenseanxy/helm-hadoop-3)
+ * Hadoop: `oneofSong/kubernetes-HDFS` from [here](https://github.com/oneofSong/kubernetes-HDFS)
 
 ## Config
 
 In `values.yaml`:
 
-`hbase.hdfs.name`, `hbase.hdfs.release`: point to your Hadoop deployment
+`hbase.hdfs.rootidr`: point to your Hadoop deployment
 
-`hbase.zookeeper.quorum`: Zookeeper address:port
+`zookeeper.name`: Zookeeper quorum address:port list
+
+`zookeeper.quorumSize`: Zookeeper quorum size
 
 ## Architecture
 
@@ -47,8 +48,3 @@ This chart is using several functionalities from Kubernetes.
 * [PersistentVolumClaim](https://kubernetes.io/docs/concepts/storage/persistent-volumes/): allows pod to have volumes for data. Used for HDFS.
 
 There's a YAML per role and per functionality. Binding is done through [Selectors](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/).
-
-## TODO
-
-* Namenode HA
-* Hbase Master HA

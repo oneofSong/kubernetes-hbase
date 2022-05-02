@@ -1,15 +1,17 @@
 # The base hadoop image to use for all components.
 # See this repo for image build details: https://github.com/chenseanxy/helm-hbase-chart/tree/master/image
 
-hbaseImage: chenseanxy/hbase:1.4.10-hadoop3.1.2
+# hbaseImage: chenseanxy/hbase:1.4.10-hadoop3.1.2
+hbaseImage: hbase:1.2.4
+imagePullPolicy: "IfNotPresent"
 
 # Select anitAffinity as either hard or soft, default is hard
-antiAffinity: "soft"
+# antiAffinity: "soft"
 
-hdfs:
-  nameNode:
+hbase:
+  hmaster:
+    replicas: 2
     pdbMinAvailable: 1
-
     resources:
       requests:
         memory: "256Mi"
@@ -18,11 +20,9 @@ hdfs:
         memory: "2048Mi"
         cpu: "1000m"
 
-  dataNode:
+  regionServer:
     replicas: 3
-
-    pdbMinAvailable: 3
-
+    pdbMinAvailable: 1
     resources:
       requests:
         memory: "256Mi"
@@ -30,6 +30,13 @@ hdfs:
       limits:
         memory: "2048Mi"
         cpu: "1000m"
+
+
+  hdfs: 
+    rootidr: "hdfs://hdfs-namenode-0.hdfs-namenode.hdfs.svc.cluster.local:8020/hbase"
+    name: "hadoop"
+    release: "hadoop"
+
 
 persistence:
   nameNode:
@@ -44,11 +51,8 @@ persistence:
     accessMode: ReadWriteOnce
     size: 200Gi
 
-hbase:
-  hmaster:
-    replicas: 1
-  hdfs: 
-    name: "hadoop"
-    release: "hadoop"
-  zookeeper:
-    quorum: "zookeeper"
+
+zookeeper:
+  zookeeperQuorumOverride: ""
+  name: "hdfs-zookeeper"
+  quorumSize: 3

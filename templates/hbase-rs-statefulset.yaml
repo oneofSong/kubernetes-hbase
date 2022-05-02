@@ -1,4 +1,4 @@
-apiVersion: apps/v1beta1
+apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: {{ template "hbase.name" . }}-rs
@@ -9,8 +9,11 @@ metadata:
     heritage: {{ .Release.Service }}
     component: hbase-rs
 spec:
+  selector:
+    matchLabels:
+      app: {{ template "hbase.name" . }}
   serviceName: {{ template "hbase.name" . }}-rs
-  replicas: {{ .Values.hdfs.dataNode.replicas }}
+  replicas: {{ .Values.hbase.regionServer.replicas }}
   template:
     metadata:
       labels:
@@ -18,14 +21,15 @@ spec:
         release: {{ .Release.Name }}
         component: hbase-rs
     spec:
-      affinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-          - topologyKey: "kubernetes.io/hostname"
-            labelSelector:
-              matchLabels:
-                app:  {{ .Values.hbase.hdfs.name }}
-                release: {{ .Values.hbase.hdfs.release | quote }}
-                component: hdfs-nn
+      # affinity:
+      #   podAntiAffinity:
+      #     requiredDuringSchedulingIgnoredDuringExecution:
+      #         - topologyKey: "kubernetes.io/hostname"
+      #           labelSelector:
+      #             matchLabels:
+      #               app:  {{ .Values.hbase.hdfs.name }}
+      #               release: {{ .Values.hbase.hdfs.release | quote }}
+      #               component: hdfs-nn
       terminationGracePeriodSeconds: 0
       containers:
       - name: hbase-rs
@@ -35,7 +39,7 @@ spec:
         - "/bin/bash"
         - "/tmp/hbase-config/bootstrap.sh"
         resources:
-{{ toYaml .Values.hdfs.nameNode.resources | indent 10 }}
+{{ toYaml .Values.hbase.regionServer.resources | indent 10 }}
         readinessProbe:
           httpGet:
             path: /
