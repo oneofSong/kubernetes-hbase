@@ -34,8 +34,7 @@ hbase:
 
   hdfs: 
     rootidr: "hdfs://hdfs-namenode-0.hdfs-namenode.hdfs.svc.cluster.local:8020/hbase"
-    name: "hadoop"
-    release: "hadoop"
+    name: "hdfs-test"
 
 
 persistence:
@@ -54,5 +53,5 @@ persistence:
 
 zookeeper:
   zookeeperQuorumOverride: ""
-  name: "hdfs-zookeeper"
+  name: "hdfs-test-zookeeper"
   quorumSize: 3

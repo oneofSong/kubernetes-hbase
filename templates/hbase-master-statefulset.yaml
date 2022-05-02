@@ -65,5 +65,5 @@ spec:
       - name: hdfs-config
         configMap:
           defaultMode: 420
-          name: hdfs-config
-    
+          name: {{ template "hdfs.config" . }}
+ 

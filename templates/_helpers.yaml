@@ -67,3 +67,8 @@ since that is the only special index that helm template gives us.
 {{- end -}}
 {{- end -}}
 {{- end -}}
+
+
+{{- define "hdfs.config" -}}
+{{- printf "%s-config" .Values.hbase.hdfs.name -}}
+{{- end -}}
