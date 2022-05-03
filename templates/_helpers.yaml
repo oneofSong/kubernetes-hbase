@@ -76,5 +76,5 @@ since that is the only special index that helm template gives us.
 {{- define "hdfs.rootdir" -}}
 {{- $domain := include "svc-domain" . -}}
 {{- $port := default "8020" .Values.hbase.hdfs.port -}}
-{{- printf "%s-namenode-0.%s-namenode.%s:%s" .Release.Namespace .Release.Namespace $domain $port -}}
+{{- printf "%s-namenode-0.%s-namenode.%s:%s" .Values.hbase.hdfs.name .Values.hbase.hdfs.name $domain $port -}}
 {{- end -}}
