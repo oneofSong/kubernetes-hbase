@@ -22,7 +22,7 @@ data:
       </property>
       <property>
         <name>hbase.rootdir</name>
-        <value>{{ .Values.hbase.hdfs.rootdir }}</value>
+        <value>{{ template "hdfs.rootdir" .}}</value>
       </property>
       <property>
         <name>hbase.unsafe.stream.capability.enforce</name>

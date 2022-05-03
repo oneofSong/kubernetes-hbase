@@ -19,7 +19,6 @@ hbase:
       limits:
         memory: "2048Mi"
         cpu: "1000m"
-
   regionServer:
     replicas: 3
     pdbMinAvailable: 1
@@ -30,11 +29,10 @@ hbase:
       limits:
         memory: "2048Mi"
         cpu: "1000m"
-
-
   hdfs: 
     rootidr: "hdfs://hdfs-namenode-0.hdfs-namenode.hdfs.svc.cluster.local:8020/hbase"
     name: "hdfs-test"
+    port: "8020"
 
 
 persistence:
