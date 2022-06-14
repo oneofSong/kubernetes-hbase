@@ -34,10 +34,16 @@ spec:
       containers:
       - name: hbase-rs
         image: {{ .Values.hbaseImage }}
+        env:
+        - name: HADOOP_CUSTOM_CONF_DIR
+          value: /etc/hadoop-custom-conf
+        - name: MULTIHOMED_NETWORK
+          value: "0"
         imagePullPolicy: {{ .Values.imagePullPolicy }}
-        command:
-        - "/bin/bash"
-        - "/tmp/hbase-config/bootstrap.sh"
+        command: ['/bin/sh', '-c']
+        # The start script is provided by a config map.
+        args:
+          - /entrypoint.sh "/tmp/hbase-config/bootstrap.sh"
         resources:
 {{ toYaml .Values.hbase.regionServer.resources | indent 10 }}
         readinessProbe:
@@ -55,7 +61,15 @@ spec:
         volumeMounts:
         - name: hbase-config
           mountPath: /tmp/hbase-config
+        - name: hdfs-config
+          mountPath: /etc/hadoop-custom-conf
+          readOnly: true
       volumes:
       - name: hbase-config
         configMap:
           name: hbase-configmap
+          defaultMode: 0744
+      - name: hdfs-config
+        configMap:
+          defaultMode: 420
+          name: {{ template "hdfs.config" . }}
